@@ -7,13 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-
     @GetMapping("users/{id}")
-    public User getUserById(@PathVariable /*(name = "id")*/ String id) {
-        return new User();
+    public User getUserById(@PathVariable String id){
+        User user = new User();
+        return user;
     }
-
-
-
 
 }

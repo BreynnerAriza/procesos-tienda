@@ -1,2 +1,2 @@
 # procesos-tienda
-Proyecto de clase de la materia de clase Procesos de Negocio
+proyecto de la clase para procesos de negocios( 2023-2)
