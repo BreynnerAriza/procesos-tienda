@@ -3,6 +3,8 @@ package com.procesos.tienda.controller;
 import com.procesos.tienda.model.User;
 import com.procesos.tienda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -13,27 +15,32 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("users/{id}")
-    public User getUserById(@PathVariable Long id){
-       return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id){
+        try{
+            return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
     }
 
     @PostMapping("users")
-    public User create(@RequestBody User user){
-        return userService.createUser(user);
+    public ResponseEntity<User> create(@RequestBody User user){
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("users/{id}")
-    public User update(@RequestBody User userReq, @PathVariable Long id){
-        return userService.updateUser(userReq,id);
+    public ResponseEntity<User> update(@RequestBody User user, @PathVariable Long id){
+        return new ResponseEntity<>(userService.updateUser(user,id), HttpStatus.OK);
     }
 
     @DeleteMapping("users/{id}")
-    public boolean delete(@PathVariable Long id){
-        return userService.deleteUser(id);
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        return new ResponseEntity<>(Boolean.toString(userService.deleteUser(id)), HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("users")
-    public List<User> findAll(){
-        return userService.findAllUsers();
+    public ResponseEntity<List<User>> findAll(){
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 }
