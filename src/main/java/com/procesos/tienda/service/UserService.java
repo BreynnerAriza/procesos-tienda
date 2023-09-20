@@ -5,6 +5,7 @@ import com.procesos.tienda.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,13 +18,17 @@ public class UserService {
         return userRepository.save(userReq);
     }
 
-    public Optional<User> getUserById(User userReq){
-        return userRepository.findById(userReq.getId());
+    public User getUserById(Long id){
+        return userRepository.findById(id).get();
+    }
+
+    public List<User> findAllUsers(){
+        return (List<User>) userRepository.findAll();
     }
 
     //Metodo para actializar un usuario
-    public User updateUser(User userReq){
-        Optional<User> userBd = userRepository.findById(userReq.getId());
+    public User updateUser(User userReq, Long id){
+        Optional<User> userBd = userRepository.findById(id);
         if(userBd.isEmpty())
             return  null;
         userBd.get().setFirstName(userReq.getFirstName());
@@ -34,8 +39,8 @@ public class UserService {
     }
 
     //Metodo para eliminar de una base de datos
-    public boolean deleteUser(User userReq){
-        Optional<User> userBd = userRepository.findById(userReq.getId());
+    public boolean deleteUser(Long id){
+        Optional<User> userBd = userRepository.findById(id);
         if(userBd.isEmpty())
             return false;
         userRepository.deleteById(userBd.get().getId());
