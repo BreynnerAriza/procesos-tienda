@@ -1,7 +1,9 @@
 package com.procesos.tienda.service;
 
+import com.procesos.tienda.exception.NotFoundException;
 import com.procesos.tienda.model.User;
 import com.procesos.tienda.repository.UserRepository;
+import com.procesos.tienda.util.Constans;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,9 @@ public class UserService {
     }
 
     public User getUserById(Long id){
-        return userRepository.findById(id).get();
+        if(id == null)
+            throw new RuntimeException(Constans.USER_IS_NULL.getMessage());
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(Constans.USER_NOT_FOUND.getMessage()));
     }
 
     public List<User> findAllUsers(){
@@ -30,7 +34,7 @@ public class UserService {
     public User updateUser(User userReq, Long id){
         Optional<User> userBd = userRepository.findById(id);
         if(userBd.isEmpty())
-            return  null;
+            throw new RuntimeException(Constans.USER_NOT_FOUND.getMessage());
         userBd.get().setFirstName(userReq.getFirstName());
         userBd.get().setLastName(userReq.getLastName());
         userBd.get().setPhone(userReq.getPhone());
@@ -41,7 +45,7 @@ public class UserService {
     public boolean deleteUser(Long id){
         Optional<User> userBd = userRepository.findById(id);
         if(userBd.isEmpty())
-            return false;
+            throw new RuntimeException(Constans.USER_NOT_FOUND.getMessage());
         userRepository.deleteById(userBd.get().getId());
         return true;
     }

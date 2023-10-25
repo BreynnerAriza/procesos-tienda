@@ -3,6 +3,7 @@ package com.procesos.tienda.service;
 import com.procesos.tienda.model.Address;
 import com.procesos.tienda.model.User;
 import com.procesos.tienda.repository.AddressRepository;
+import com.procesos.tienda.util.Constans;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,6 @@ public class AddressService {
 
     public Address createAddress(Address address, Long idUser){
         User userBd = userService.getUserById(idUser);
-        if(userBd == null){
-            throw new RuntimeException("User not found");
-        }
         address.setUser(userBd);
         return addressRepository.save(address);
     }
@@ -28,7 +26,7 @@ public class AddressService {
     public Address updateStatusAddress(Long id){
         Optional<Address> addressBd = addressRepository.findById(id);
         if(addressBd.isEmpty()){
-            throw new RuntimeException("Address not found");
+            throw new RuntimeException(Constans.ADDRESS_NOT_FOUND.getMessage());
         }
         addressBd.get().setStatus(Boolean.FALSE);
         return  addressRepository.save(addressBd.get());
@@ -41,7 +39,7 @@ public class AddressService {
     public Address getAddressById(Long id){
         Optional<Address> addressBd = addressRepository.findById(id);
         if(addressBd.isEmpty())
-            throw new RuntimeException("Address not found");
+            throw new RuntimeException(Constans.ADDRESS_NOT_FOUND.getMessage());
         return addressBd.get();
     }
 }
