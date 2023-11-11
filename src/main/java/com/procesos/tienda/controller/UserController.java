@@ -2,6 +2,7 @@ package com.procesos.tienda.controller;
 
 import com.procesos.tienda.model.User;
 import com.procesos.tienda.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +23,16 @@ public class UserController {
 
     @GetMapping("users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id){
-        try{
-            return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
-        }catch (Exception ex){
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PostMapping("users")
-    public ResponseEntity<User> create(@Validated @RequestBody User user){
+    public ResponseEntity<User> create(@Valid @RequestBody User user){
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("users/{id}")
-    public ResponseEntity<User> update(@Validated @RequestBody User user, @PathVariable Long id){
+    public ResponseEntity<User> update(@Valid @RequestBody User user, @PathVariable Long id){
         return new ResponseEntity<>(userService.updateUser(user,id), HttpStatus.OK);
     }
 

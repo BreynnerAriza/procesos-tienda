@@ -26,7 +26,6 @@ public class AddressController {
         return new ResponseEntity<>(addressService.finAllAddress(),HttpStatus.OK);
     }
 
-
     @PostMapping("address")
     public ResponseEntity<Address> create(@Validated @RequestBody Address address,@PathVariable Long id){
         return new ResponseEntity<>(addressService.createAddress(address,id),HttpStatus.CREATED);

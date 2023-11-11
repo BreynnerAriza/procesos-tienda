@@ -17,10 +17,10 @@ import java.util.Map;
 public class CustomExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException notFoundException){
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException notFoundException) {
         Map<String, String> response = new HashMap<>();
         response.put("Date: ", LocalDate.now().toString());
-        response.put("Message: ",notFoundException.getMessage());
+        response.put("Message: ", notFoundException.getMessage());
         response.put("Status code", "404");
         return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
     }

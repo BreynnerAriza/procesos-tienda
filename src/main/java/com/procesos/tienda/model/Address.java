@@ -26,7 +26,6 @@ public class Address {
     @Size(max = 10, message = "Postal code max 10 characters")
     private String postalCode;
     private Boolean status = Boolean.TRUE;
-
     @ManyToOne
     @JoinColumn(name = "id_user",referencedColumnName = "id")
     private User user;
