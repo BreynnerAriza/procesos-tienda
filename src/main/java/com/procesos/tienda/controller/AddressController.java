@@ -2,37 +2,31 @@ package com.procesos.tienda.controller;
 
 import com.procesos.tienda.model.Address;
 import com.procesos.tienda.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class AddressController {
-
     @Autowired
     private AddressService addressService;
 
+    @PostMapping("address/{idUser}")
+    public ResponseEntity create(@Valid @RequestBody Address address, @PathVariable Long idUser){
+        return new ResponseEntity<>(addressService.createAddress(address,idUser), HttpStatus.CREATED);
+    }
+    @GetMapping("address/disable/{id}")
+    public ResponseEntity disable(@PathVariable Long id){
+        return ResponseEntity.ok(addressService.updateStatusAddress(id));
+    }
     @GetMapping("address/{id}")
-    public ResponseEntity<Address> getAddressById(@PathVariable Long id){
-        return new ResponseEntity<>(addressService.getAddressById(id), HttpStatus.OK);
+    public ResponseEntity getById(@PathVariable Long id){
+        return ResponseEntity.ok(addressService.getByIdAddress(id));
     }
-
     @GetMapping("address")
-    public ResponseEntity<List<Address>> findAll(){
-        return new ResponseEntity<>(addressService.finAllAddress(),HttpStatus.OK);
-    }
-
-    @PostMapping("address")
-    public ResponseEntity<Address> create(@Validated @RequestBody Address address,@PathVariable Long id){
-        return new ResponseEntity<>(addressService.createAddress(address,id),HttpStatus.CREATED);
-    }
-
-    @GetMapping("address/disabled/{id}")
-    public ResponseEntity disabled(@PathVariable Long id){
-        return new ResponseEntity(addressService.updateStatusAddress(id),HttpStatus.OK);
+    public ResponseEntity findAll(){
+        return ResponseEntity.ok(addressService.findAllAddress());
     }
 }
